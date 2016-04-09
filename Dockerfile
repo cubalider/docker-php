@@ -43,6 +43,8 @@ RUN service cron start
 
 # Permissions
 RUN usermod -u 1000 www-data
+RUN chown -R www-data:www-data /var/www/app/cache
+RUN chown -R www-data:www-data /var/www/app/logs
 
 # Needed to edit files
 RUN export TERM=xterm
