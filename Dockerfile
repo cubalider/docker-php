@@ -41,5 +41,8 @@ RUN apt-get install -y git
 RUN apt-get install -y git cron
 RUN service cron start
 
+# Permissions
+RUN usermod -u 1000 www-data
+
 # Needed to edit files
 RUN export TERM=xterm
