@@ -12,7 +12,7 @@ RUN docker-php-ext-install mcrypt
 
 # Intl extension
 RUN apt-get install -y libicu-dev
-RUN pecl install intl && docker-php-ext-enable intl
+RUN docker-php-ext-install intl
 
 # Bcmath extension
 RUN docker-php-ext-install bcmath
