@@ -6,6 +6,9 @@ COPY php.ini /usr/local/etc/php/
 
 RUN apt-get update
 
+# Mysql
+RUN docker-php-ext-install pdo_mysql
+
 # Mcrypt extension
 RUN apt-get install -y libmcrypt-dev
 RUN docker-php-ext-install mcrypt
