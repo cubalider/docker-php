@@ -1,7 +1,5 @@
 FROM php:fpm
 
-WORKDIR /var/www/public
-
 COPY php.ini /usr/local/etc/php/
 
 RUN apt-get update
