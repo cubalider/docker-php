@@ -1,53 +1,25 @@
-FROM php:fpm
+FROM php:7.1.1-fpm-alpine
+
+WORKDIR /var/www
 
 COPY php.ini /usr/local/etc/php/
 
-RUN apt-get update
+RUN apk add --no-cache \
+    # Needed for mcrypt extension
+    libmcrypt-dev \
+    # Needed for intl extension
+    icu-dev \
+    # Needed for zip extension
+    zlib-dev \
+    # Needed for xdebug
+    g++ make autoconf \
+    # Needed for mongodb
+    openssl-dev
 
-# Mysql
-RUN docker-php-ext-install pdo_mysql
-
-# Mcrypt extension
-RUN apt-get install -y libmcrypt-dev
-RUN docker-php-ext-install mcrypt
-
-# Intl extension
-RUN apt-get install -y libicu-dev
-RUN docker-php-ext-install intl
-
-# Bcmath extension
-RUN docker-php-ext-install bcmath
-
-# Mbstring extension
-# TODO: Ya esta extension esta anadida por defecto
-RUN docker-php-ext-install mbstring
-
-# Zip extension
-RUN apt-get install -y libssl-dev
-RUN docker-php-ext-install zip
+RUN docker-php-ext-install mcrypt intl bcmath zip pdo_mysql
 
 # Xdebug
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 # Mongodb
 RUN pecl install mongodb && docker-php-ext-enable mongodb
-
-# Composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php -r "if (hash_file('SHA384', 'composer-setup.php') === 'e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-RUN php composer-setup.php
-RUN php -r "unlink('composer-setup.php');"
-RUN mv composer.phar /usr/local/bin/composer
-
-# Needed for composer
-RUN apt-get install -y git
-
-# Needed to run php tasks
-RUN apt-get install -y git cron
-RUN service cron start
-
-# Permissions
-RUN usermod -u 1000 www-data
-
-# Needed to edit files
-RUN export TERM=xterm
