@@ -1,9 +1,5 @@
 FROM php:7.1.1-fpm-alpine
 
-WORKDIR /var/www
-
-COPY php.ini /usr/local/etc/php/
-
 RUN apk add --no-cache \
     # Needed for mcrypt extension
     libmcrypt-dev \
