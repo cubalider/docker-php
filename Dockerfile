@@ -1,4 +1,4 @@
-FROM php:7.1.1-fpm-alpine
+FROM php:7.1.11-fpm-alpine3.4
 
 RUN apk add --no-cache \
     # Needed for mcrypt extension
@@ -10,7 +10,7 @@ RUN apk add --no-cache \
     # Needed for xdebug
     g++ make autoconf \
     # Needed for mongodb
-    openssl-dev
+    openssl-dev pcre-dev
 
 RUN docker-php-ext-install mcrypt intl bcmath zip pdo_mysql
 
