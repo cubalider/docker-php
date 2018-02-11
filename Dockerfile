@@ -1,4 +1,6 @@
-FROM php:7.1.11-fpm-alpine3.4
+FROM php:7.2.2-fpm-alpine3.7
+
+RUN apk update
 
 RUN apk add --no-cache \
     # Needed for mcrypt extension
